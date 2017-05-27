@@ -126,4 +126,31 @@ end
 # [[0, 1]] repeated_number_ranges([1, 2, 3, 3, 4, 4, 4]) => [[2, 3], [4, 6]]
 
 def repeated_number_ranges(arr)
+  ranges = []
+  start_idx = nil
+  (0...arr.length).each do |idx|
+    if arr[idx] == arr[idx + 1]
+      start_idx = idx unless start_idx
+    elsif start_idx
+      ranges << [start_idx, idx]
+      start_idx = nil
+    end
+  end
+  ranges
 end
+
+#The following method is not working for the last test. Don't not use.
+# def find_start_index(arr,num)
+#   start_index = 0
+#   (0...arr.length).each do |idx|
+#     return start_index = idx if arr[idx] == arr[idx + 1] && arr[idx] == num
+#   end
+# end
+#
+# def find_last_index(arr,num)
+#   last_index = 0
+#   (0...arr.length).each do |idx|
+#     last_index = idx + 1 if arr[idx] == arr[idx + 1] && arr[idx] == num
+#   end
+#   last_index
+# end
