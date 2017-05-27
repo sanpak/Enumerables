@@ -34,7 +34,7 @@ end
 # the actual retail price without going over that price. Assume there is always
 # at least one bid below the retail price.
 def price_is_right(bids, actual_retail_price)
-  
+  (bids.select { |bid_el| bid_el < actual_retail_price }).sort[-1]
 end
 
 # Given an array of numbers, return an array of those numbers that have at least
@@ -43,9 +43,17 @@ end
 # 2, 4, 8, 16) and the others have fewer than five factors. Consider writing a
 # helper method num_factors
 def at_least_n_factors(numbers, n)
+  numbers.select { |num_factor| num_factors(num_factor) >= n }
 end
 
 def num_factors(number)
+  (1..number).reduce(0) do |count,n|
+    if number % n == 0
+      count += 1
+    else
+      count
+    end
+  end
 end
 
 # HARD
@@ -54,9 +62,13 @@ end
 # words whose vowels appear in order. You may wish to write a helper method:
 # ordered_vowel_word?
 def ordered_vowel_words(words)
+  words.select { |word| ordered_vowel_word?(word) }
 end
 
 def ordered_vowel_word?(word)
+  vowels = ["a","e","i","o","u"]
+  vowels_from_word = word.chars.select { |letter| vowels.include?(letter) }
+  vowels_from_word == vowels_from_word.sort
 end
 
 # Given an array of numbers, return an array of all the products remaining when
@@ -72,7 +84,13 @@ end
 # 10, because you take out 3, leaving 1 * 2 * 5 6, because you take out 5,
 # leaving 1 * 2 * 3
 def products_except_me(numbers)
+  result_array = []
+  (0..numbers.length-1).each do |idx|
+    result_array << array_product(numbers[0...idx] + numbers[idx+1..-1])
+  end
+  result_array
 end
 
 def array_product(array)
+  array.reduce(:*)
 end
